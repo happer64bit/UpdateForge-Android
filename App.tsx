@@ -18,7 +18,10 @@ const Tab = createBottomTabNavigator()
 const FeedScreen = () => {
   return (
     <Stack.Navigator screenOptions={{
-      headerShown: false
+      headerShown: false,
+      contentStyle: {
+        backgroundColor: "#fff"
+      }
     }} initialRouteName='_Home'>
       <Stack.Screen name='_Home' component={HomeScreen} />
     </Stack.Navigator>
@@ -30,7 +33,10 @@ export default function App(): JSX.Element {
     <NavigationContainer>
       <ApolloProvider client={client}>
         <Tab.Navigator screenOptions={{
-          headerShown: false
+          headerShown: false,
+          tabBarStyle: {
+            elevation: 0,
+          }
         }} initialRouteName='Home'>
           <Tab.Screen name='Home' component={FeedScreen} options={{
             tabBarIcon: () => <Icon name='home' size={18}/>
