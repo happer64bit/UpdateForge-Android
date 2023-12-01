@@ -5,6 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AppsScreen from './screens/AppsScreen';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Icon from 'react-native-vector-icons/Feather'
 
 const client = new ApolloClient({
   uri: 'https://updateforge.vercel.app/api/graphql',
@@ -31,8 +32,15 @@ export default function App(): JSX.Element {
         <Tab.Navigator screenOptions={{
           headerShown: false
         }} initialRouteName='Home'>
-          <Tab.Screen name='Home' component={FeedScreen} />
-          <Tab.Screen name='Store' component={AppsScreen} />
+          <Tab.Screen name='Home' component={FeedScreen} options={{
+            tabBarIcon: () => <Icon name='home' size={18}/>
+          }} />
+          <Tab.Screen name='Store' component={AppsScreen} options={{
+            tabBarIcon: () => <Icon name='briefcase' size={18}/>
+          }}/>
+          <Tab.Screen name='Settings' component={AppsScreen} options={{
+            tabBarIcon: () => <Icon name='settings' size={18}/>
+          }}/>
         </Tab.Navigator>
       </ApolloProvider>
     </NavigationContainer>
