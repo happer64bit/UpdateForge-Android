@@ -60,3 +60,6 @@ target 'updateforge' do
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
+
+pod 'React', :path => '../node_modules/react-native'
+pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
