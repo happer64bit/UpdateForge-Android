@@ -9,16 +9,50 @@ import styles from '../global.style'
 import Icon from 'react-native-vector-icons/Feather'
 import { store } from '../state/store'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { editSource } from "../state/sourcelist_reducers";
+import { useToast } from 'react-native-toast-notifications'
 
 export default function HomeScreen({ navigation }: any) {
     const [list, setList] = useState<any[]>([])
     const [isloading, setIsLoading] = useState<boolean>(true)
+    const dispatch = useDispatch();
+    const toast = useToast()
 
-    function refetch() {
-        setIsLoading(true)
-        setList(store.getState().sources)
-        console.log(list)
-        setIsLoading(false)
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setList(store.getState().sources)
+          });
+      
+          return unsubscribe;
+    }, [navigation])
+
+    async function updateButtonOnClick() {
+        setIsLoading(true);
+
+        try {
+            const schemas = list;
+
+            await Promise.all(
+                schemas.map(async (event: any) => {
+                    const res = await fetch(event.source_url, {
+                        headers: Object(event.headers),
+                    });
+
+                    if (res.ok) {
+                        const body = await res.json();
+                        editSource(event.id, { ...body });
+                    } else {
+                        return toast.show(`Failed to update for ${event.json.metadata.name}`, {
+                            type: "danger"
+                        })
+                    }
+                    toast.show("Updated All Schema")
+                })
+            )
+        } catch {
+
+        }
     }
 
     useEffect(() => {
@@ -43,7 +77,7 @@ export default function HomeScreen({ navigation }: any) {
                         Import Schema
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.defaultButton} onPress={refetch} disabled={isloading}>
+                <TouchableOpacity style={styles.defaultButton} onPress={updateButtonOnClick} disabled={isloading}>
                     <Icon name="rotate-ccw" color={"#fff"} />
                     <Text style={{ color: "white" }} >Update</Text>
                 </TouchableOpacity>
@@ -73,7 +107,7 @@ export default function HomeScreen({ navigation }: any) {
                                 method: "GET",
                             }} />
                             <View>
-                                <Text style={{ color: "#000", fontWeight: "bold", fontSize: 24}}>{event.json.metadata.name}</Text>
+                                <Text style={{ color: "#000", fontWeight: "bold", fontSize: 24 }}>{event.json.metadata.name}</Text>
                                 <Text style={{ color: "#000" }}>{event.json.metadata.description.slice(0, 100)}...</Text>
                             </View>
                         </View>

@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { persistor, store } from './state/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import PreviewScreen from './screens/PreviewScreen';
+import { ToastProvider } from 'react-native-toast-notifications'
 
 const client = new ApolloClient({
   uri: 'https://updateforge.vercel.app/api/graphql',
@@ -38,34 +39,36 @@ const FeedScreen = () => {
 export default function App(): JSX.Element {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <ApolloProvider client={client}>
-            <Tab.Navigator screenOptions={{
-              headerShown: false,
-              tabBarStyle: {
-                elevation: 0,
-              }
-            }} initialRouteName='Home'>
-              <Tab.Screen name='Home' component={FeedScreen} options={{
-                tabBarIcon: () => <Icon name='home' size={18} />,
-                lazy: true,
-                headerTitleStyle: {
-                  fontFamily: 'Quicksand'
+      <ToastProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <ApolloProvider client={client}>
+              <Tab.Navigator screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                  elevation: 0,
                 }
-              }} />
-              <Tab.Screen name='Store' component={AppsScreen} options={{
-                tabBarIcon: () => <Icon name='briefcase' size={18} />,
-                lazy: true
-              }} />
-              <Tab.Screen name='Settings' component={AppsScreen} options={{
-                tabBarIcon: () => <Icon name='settings' size={18} />,
-                lazy: true
-              }} />
-            </Tab.Navigator>
-          </ApolloProvider>
-        </NavigationContainer>
-      </PersistGate>
+              }} initialRouteName='Home'>
+                <Tab.Screen name='Home' component={FeedScreen} options={{
+                  tabBarIcon: () => <Icon name='home' size={18} />,
+                  lazy: true,
+                  headerTitleStyle: {
+                    fontFamily: 'Quicksand'
+                  }
+                }} />
+                <Tab.Screen name='Store' component={AppsScreen} options={{
+                  tabBarIcon: () => <Icon name='briefcase' size={18} />,
+                  lazy: true
+                }} />
+                <Tab.Screen name='Settings' component={AppsScreen} options={{
+                  tabBarIcon: () => <Icon name='settings' size={18} />,
+                  lazy: true
+                }} />
+              </Tab.Navigator>
+            </ApolloProvider>
+          </NavigationContainer>
+        </PersistGate>
+      </ToastProvider>
     </Provider>
   )
 }

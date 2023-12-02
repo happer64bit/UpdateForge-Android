@@ -6,6 +6,7 @@ const initialState = {
 // Define action types
 const ADD_SOURCE = 'ADD_SOURCE';
 const REMOVE_SOURCE = 'REMOVE_SOURCE';
+const EDIT_SOURCE = 'EDIT_SOURCE';
 
 // Define the reducer function
 const sourceListReducer = (state = initialState, action) => {
@@ -22,6 +23,18 @@ const sourceListReducer = (state = initialState, action) => {
         sources: state.sources.filter(source => source.id !== action.payload),
       };
 
+    case EDIT_SOURCE:
+      return {
+        ...state,
+        sources: state.sources.map(source => {
+          if (source.id === action.payload.id) {
+            // Update the matched source
+            return { ...source, ...action.payload.updatedSource };
+          }
+          return source;
+        }),
+      };
+
     default:
       return state;
   }
@@ -36,6 +49,11 @@ export const addSource = (newSource) => ({
 export const removeSource = (sourceId) => ({
   type: REMOVE_SOURCE,
   payload: sourceId,
+});
+
+export const editSource = (sourceId, updatedSource) => ({
+  type: EDIT_SOURCE,
+  payload: { id: sourceId, updatedSource },
 });
 
 export default sourceListReducer;

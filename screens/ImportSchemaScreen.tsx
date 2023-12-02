@@ -4,10 +4,11 @@ import styles from "../global.style";
 import { Text } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'
 import React, { useReducer, useState } from "react";
-import sourceListReducer, { addSource } from "../state/sourcelist_reducers";
+import { addSource } from "../state/sourcelist_reducers";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from 'uuid'
 import 'react-native-get-random-values'
+import { useToast } from "react-native-toast-notifications";
 
 export default function ImportSchemaScreen({ navigation }: any) {
     const [headers, setHeaders] = useState<{ key: string, value: string }[]>([{ key: "", value: "" }]);
@@ -15,7 +16,8 @@ export default function ImportSchemaScreen({ navigation }: any) {
     const [headerErrors, setHeaderErrors] = useState<boolean[]>([false]);
     const [urlError, setUrlError] = useState<boolean>(false);
     const dispatch = useDispatch();
-
+    const toast = useToast()
+    
     const handleUrlInputChange = (e) => {
         setUrlValue(e);
         setUrlError(false);

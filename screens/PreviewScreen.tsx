@@ -3,9 +3,16 @@ import { View } from "react-native";
 import AppBar from "../components/AppBar";
 import styles from "../global.style";
 import Icon from 'react-native-vector-icons/Feather'
+import { useDispatch, useSelector } from "react-redux";
+import { removeSource } from "../state/sourcelist_reducers";
+import { useToast } from "react-native-toast-notifications";
+import { store } from "../state/store";
 
 export default function PreviewScreen({ route, navigation }) {
     const { data } = route.params
+    const toast = useToast()
+    
+    const dispatch = useDispatch()
 
     return (
         <View>
@@ -36,6 +43,20 @@ export default function PreviewScreen({ route, navigation }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center"
+                    }} onPress={() => {
+                        const isDeleted = dispatch(removeSource(data.id))
+
+                        if (isDeleted) {
+                            toast.show("Successfully deleted", {
+                              type: "success",
+                            });
+                            navigation.pop();
+                          } else {
+                            toast.show("Failed to delete", {
+                              type: "danger",
+                            });
+                          }
+                      
                     }}>
                         <Icon name="trash" color={"red"} size={17}/>
                         <Text style={{ color: "red", fontSize: 17 }}>Delete</Text>
@@ -56,7 +77,7 @@ export default function PreviewScreen({ route, navigation }) {
                     marginTop: 20
                 }}>
                     {data.json.list.map((event) => (
-                        <View key={event.id} style={{
+                        <View key={event.version} style={{
                             marginVertical: 5
                         }}>
                             <View style={{
