@@ -6,7 +6,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 10,
         color: "#fff",
-        borderRadius: 5
+        borderRadius: 5,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Quicksand-Regular",
+        gap: 4
     },
     defaultInput: {
         paddingHorizontal: 12,
@@ -15,6 +21,14 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         borderRadius: 6,
         borderColor: "#333",
+        fontFamily: "Quicksand-Regular"
+    },
+    defaultFont: {
+        fontFamily: "Quicksand-Regular"
+    },
+    ghostButton: {
+        paddingHorizontal: 12,
+        paddingVertical: 5,
     }
 })
 
