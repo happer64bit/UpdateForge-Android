@@ -7,6 +7,7 @@ const initialState = {
 const ADD_SOURCE = 'ADD_SOURCE';
 const REMOVE_SOURCE = 'REMOVE_SOURCE';
 const EDIT_SOURCE = 'EDIT_SOURCE';
+const FIND_SOURCE = 'FIND_SOURCE';
 
 // Define the reducer function
 const sourceListReducer = (state = initialState, action) => {
@@ -35,6 +36,14 @@ const sourceListReducer = (state = initialState, action) => {
         }),
       };
 
+    case FIND_SOURCE:
+      const foundSource = state.sources.find(source => source.id === action.payload);
+      return {
+        ...state,
+        foundSource,
+      };
+
+
     default:
       return state;
   }
@@ -54,6 +63,11 @@ export const removeSource = (sourceId) => ({
 export const editSource = (sourceId, updatedSource) => ({
   type: EDIT_SOURCE,
   payload: { id: sourceId, updatedSource },
+});
+
+export const findSource = (sourceId) => ({
+  type: FIND_SOURCE,
+  payload: sourceId,
 });
 
 export default sourceListReducer;

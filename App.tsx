@@ -12,6 +12,7 @@ import { persistor, store } from './state/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import PreviewScreen from './screens/PreviewScreen';
 import { ToastProvider } from 'react-native-toast-notifications'
+import EditHeaderScreen from './screens/EditHeaderScreen';
 
 const client = new ApolloClient({
   uri: 'https://updateforge.vercel.app/api/graphql',
@@ -32,6 +33,7 @@ const FeedScreen = () => {
       <Stack.Screen name='_Home' component={HomeScreen} />
       <Stack.Screen name='ImportSchemaScreen' component={ImportSchemaScreen} />
       <Stack.Screen name='PreviewScreen' component={PreviewScreen} />
+      <Stack.Screen name='EditHeaderScreen' component={EditHeaderScreen} />
     </Stack.Navigator>
   )
 }

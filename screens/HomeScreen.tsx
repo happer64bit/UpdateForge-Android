@@ -22,9 +22,9 @@ export default function HomeScreen({ navigation }: any) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setList(store.getState().sources)
-          });
-      
-          return unsubscribe;
+        });
+
+        return unsubscribe;
     }, [navigation])
 
     async function updateButtonOnClick() {
@@ -47,11 +47,13 @@ export default function HomeScreen({ navigation }: any) {
                             type: "danger"
                         })
                     }
-                    toast.show("Updated All Schema")
                 })
             )
-        } catch {
-
+            toast.show("Updated All Schema")
+        } catch (err) {
+            toast.show("Error: " + err.name, {
+                type: "danger"
+            })
         }
     }
 

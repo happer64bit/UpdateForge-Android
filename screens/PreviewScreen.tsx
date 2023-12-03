@@ -33,7 +33,7 @@ export default function PreviewScreen({ route, navigation }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center"
-                    }}>
+                    }} onPress={() => navigation.navigate("EditHeaderScreen", { id: data.id })}>
                         <Icon name="edit" color={"#000"} size={17}/>
                         <Text style={{ color: "#000", fontSize: 17 }}>Edit Header</Text>
                     </TouchableOpacity>
@@ -106,7 +106,8 @@ export default function PreviewScreen({ route, navigation }) {
                                         justifyContent: "center",
                                         alignItems: "center",
                                         borderRadius: 8,
-                                        backgroundColor: "#000"
+                                        backgroundColor: "#000",
+                                        marginLeft: 6
                                     }}>
                                         <Text style={{
                                             color: "#fff",
