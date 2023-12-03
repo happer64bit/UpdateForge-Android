@@ -4,6 +4,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    useColorScheme,
 } from 'react-native'
 import styles from '../global.style'
 import Icon from 'react-native-vector-icons/Feather'
@@ -12,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { editSource } from "../state/sourcelist_reducers";
 import { useToast } from 'react-native-toast-notifications'
+import AppBar from '../components/AppBar'
 
 export default function HomeScreen({ navigation }: any) {
     const [list, setList] = useState<any[]>([])
@@ -64,6 +66,7 @@ export default function HomeScreen({ navigation }: any) {
 
     return (
         <View>
+            <AppBar title='UpdateForge' isBackable={false} navigation={navigation}/>
             <View style={{
                 display: "flex",
                 flexDirection: "row",
@@ -71,7 +74,7 @@ export default function HomeScreen({ navigation }: any) {
                 alignItems: "center",
                 justifyContent: "flex-end",
                 paddingHorizontal: 12,
-                paddingVertical: 10
+                paddingTop: 10
             }}>
                 <TouchableOpacity style={styles.defaultButton} onPress={() => navigation.navigate("ImportSchemaScreen")} disabled={isloading}>
                     <Icon name='file-plus' color={"#fff"} />
@@ -85,7 +88,7 @@ export default function HomeScreen({ navigation }: any) {
                 </TouchableOpacity>
             </View>
             <View style={{
-                marginVertical: 20
+                marginVertical: 10
             }}>
                 {isloading && (
                     <Text>Loading...</Text>

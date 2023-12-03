@@ -2,7 +2,7 @@ import { TouchableOpacity, View } from "react-native"
 import AppBar from "../components/AppBar"
 import { TextInput } from "react-native"
 import styles from "../global.style"
-import { editSource, findSource } from "../state/sourcelist_reducers"
+import { editSource } from "../state/sourcelist_reducers"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useToast } from "react-native-toast-notifications"
@@ -72,18 +72,19 @@ export default function EditHeaderScreen({ route, navigation }) {
                 }
             }
         } catch (err: any) {
-            console.error(err)
-            // toast({
-            //     title: err.message,
-            //     variant: 'destructive',
-            // });
+            return toast.show(`Error: ${err.name}`, {
+                type: "danger"
+            })
         }
     };
 
     useEffect(() => {
-        const _headers = store.getState().sources.find(source => source.id === id)
-        setHeaders(_headers.headers);
-      }, []);
+        const _headers = store.getState().sources.find(source => source.id === id);
+    
+        if (_headers) {
+            setHeaders(_headers.headers || []);
+        }
+    }, []);    
 
     return (
         <View>
@@ -102,11 +103,13 @@ export default function EditHeaderScreen({ route, navigation }) {
                         }} key={index}>
                             <TextInput placeholder="Key" style={{
                                 ...styles.defaultInput,
-                                flex: 1
+                                flex: 1,
+                                color: "#000"
                             }} defaultValue={event.key} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'key', e)} />
                             <TextInput placeholder="Value" style={{
                                 ...styles.defaultInput,
-                                flex: 1
+                                flex: 1,
+                                color: "#000"
                             }} defaultValue={event.value} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'value', e)} />
                             <TouchableOpacity onPress={() => handleRemoveHeaderClick(index)}>
                                 <Icon name="trash" size={20} color={"#333"} />

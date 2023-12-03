@@ -3,10 +3,9 @@ import { View } from "react-native";
 import AppBar from "../components/AppBar";
 import styles from "../global.style";
 import Icon from 'react-native-vector-icons/Feather'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeSource } from "../state/sourcelist_reducers";
 import { useToast } from "react-native-toast-notifications";
-import { store } from "../state/store";
 
 export default function PreviewScreen({ route, navigation }) {
     const { data } = route.params
@@ -34,8 +33,8 @@ export default function PreviewScreen({ route, navigation }) {
                         flexDirection: "row",
                         alignItems: "center"
                     }} onPress={() => navigation.navigate("EditHeaderScreen", { id: data.id })}>
-                        <Icon name="edit" color={"#000"} size={17}/>
-                        <Text style={{ color: "#000", fontSize: 17 }}>Edit Header</Text>
+                        <Icon name="edit" color={"#000"} size={16}/>
+                        <Text style={{ color: "#000", fontSize: 16 }}>Edit Header</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
                         ...styles.ghostButton,
@@ -58,8 +57,8 @@ export default function PreviewScreen({ route, navigation }) {
                           }
                       
                     }}>
-                        <Icon name="trash" color={"red"} size={17}/>
-                        <Text style={{ color: "red", fontSize: 17 }}>Delete</Text>
+                        <Icon name="trash" color={"red"} size={16}/>
+                        <Text style={{ color: "red", fontSize: 16 }}>Delete</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
                         ...styles.ghostButton,
@@ -67,9 +66,11 @@ export default function PreviewScreen({ route, navigation }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center"
-                    }}>
-                        <Icon name="info" color={"#000"} size={17}/>
-                        <Text style={{ color: "#000", fontSize: 17 }}>Metadata</Text>
+                    }} onPress={() => navigation.navigate("ViewMetadataScreen", {
+                        metadata: data.json.metadata
+                    })}>
+                        <Icon name="info" color={"#000"} size={16}/>
+                        <Text style={{ color: "#000", fontSize: 16 }}>Metadata</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{
