@@ -13,6 +13,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import PreviewScreen from './screens/PreviewScreen';
 import { ToastProvider } from 'react-native-toast-notifications'
 import EditHeaderScreen from './screens/EditHeaderScreen';
+import ViewMetadataScreen from './screens/ViewMetadataScreen';
 
 const client = new ApolloClient({
   uri: 'https://updateforge.vercel.app/api/graphql',
@@ -33,6 +34,7 @@ const FeedScreen = () => {
       <Stack.Screen name='_Home' component={HomeScreen} />
       <Stack.Screen name='ImportSchemaScreen' component={ImportSchemaScreen} />
       <Stack.Screen name='PreviewScreen' component={PreviewScreen} />
+      <Stack.Screen name='ViewMetadataScreen' component={ViewMetadataScreen} />
       <Stack.Screen name='EditHeaderScreen' component={EditHeaderScreen} />
     </Stack.Navigator>
   )
@@ -49,21 +51,22 @@ export default function App(): JSX.Element {
                 headerShown: false,
                 tabBarStyle: {
                   elevation: 0,
-                }
+                  backgroundColor: "#fff"
+                },
               }} initialRouteName='Home'>
                 <Tab.Screen name='Home' component={FeedScreen} options={{
-                  tabBarIcon: () => <Icon name='home' size={18} />,
+                  tabBarIcon: () => <Icon name='home' size={18} color={"#000"} />,
                   lazy: true,
                   headerTitleStyle: {
                     fontFamily: 'Quicksand'
                   }
                 }} />
                 <Tab.Screen name='Store' component={AppsScreen} options={{
-                  tabBarIcon: () => <Icon name='briefcase' size={18} />,
+                  tabBarIcon: () => <Icon name='briefcase' size={18} color={"#000"} />,
                   lazy: true
                 }} />
                 <Tab.Screen name='Settings' component={AppsScreen} options={{
-                  tabBarIcon: () => <Icon name='settings' size={18} />,
+                  tabBarIcon: () => <Icon name='settings' size={18} color={"#000"} />,
                   lazy: true
                 }} />
               </Tab.Navigator>

@@ -1,4 +1,4 @@
-import { TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TextInput, TouchableOpacity, View } from "react-native";
 import AppBar from "../components/AppBar";
 import styles from "../global.style";
 import { Text } from "react-native";
@@ -15,6 +15,8 @@ export default function ImportSchemaScreen({ navigation }: any) {
     const [urlValue, setUrlValue] = useState('');
     const [headerErrors, setHeaderErrors] = useState<boolean[]>([false]);
     const [urlError, setUrlError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const dispatch = useDispatch();
     const toast = useToast()
     
@@ -53,6 +55,7 @@ export default function ImportSchemaScreen({ navigation }: any) {
 
     const handleSubmit = async () => {
         try {
+            setLoading(true)
             const isHeaderValid = validateHeaders();
             const isUrlValid = urlValue.trim() !== '';
 
@@ -96,6 +99,8 @@ export default function ImportSchemaScreen({ navigation }: any) {
             //     title: err.message,
             //     variant: 'destructive',
             // });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -109,29 +114,34 @@ export default function ImportSchemaScreen({ navigation }: any) {
                 <TextInput placeholder="https:// or http://" style={{
                     ...styles.defaultInput,
                     fontFamily: "monospace",
-                }} selectionColor={"#000"} onChangeText={handleUrlInputChange} />
+                    color: "#000"
+                }} selectionColor={"#000"} placeholderTextColor={"#1e1e1e"} onChangeText={handleUrlInputChange} />
                 <View style={{
                     marginTop: 10
                 }}>
                     {headers.map((event, index) => (
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            gap: 10,
-                            marginVertical: 4
-                        }} key={index}>
-                            <TextInput placeholder="Key" style={{
-                                ...styles.defaultInput,
-                                flex: 1
-                            }} defaultValue={event.key} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'key', e)} />
-                            <TextInput placeholder="Value" style={{
-                                ...styles.defaultInput,
-                                flex: 1
-                            }} defaultValue={event.value} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'value', e)} />
-                            <TouchableOpacity onPress={() => handleRemoveHeaderClick(index)}>
-                                <Icon name="trash" size={20} color={"#333"} />
-                            </TouchableOpacity>
+                        <View key={index}>
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                gap: 10,
+                                marginVertical: 4
+                            }}>
+                                <TextInput placeholder="Key" style={{
+                                    ...styles.defaultInput,
+                                    flex: 1,
+                                    color: "#000"
+                                }} defaultValue={event.key} placeholderTextColor={"#1e1e1e"} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'key', e)} />
+                                <TextInput placeholder="Value" style={{
+                                    ...styles.defaultInput,
+                                    flex: 1,
+                                    color: "#000"
+                                }} defaultValue={event.value} placeholderTextColor={"#1e1e1e"} selectionColor={"#000"} onChangeText={(e) => handleHeaderInputChange(index, 'value', e)} />
+                                <TouchableOpacity onPress={() => handleRemoveHeaderClick(index)}>
+                                    <Icon name="trash" size={20} color={"#333"} />
+                                </TouchableOpacity>
+                            </View>
                             {headerErrors[index] && <Text style={{
                                 fontSize: 12,
                                 color: "red"
@@ -149,7 +159,7 @@ export default function ImportSchemaScreen({ navigation }: any) {
                     <TouchableOpacity style={{
                         ...styles.defaultButton,
                         width: 100
-                    }} onPress={handleAddHeaderClick}>
+                    }} onPress={handleAddHeaderClick} disabled={loading}>
                         <Icon name="plus" color={'#fff'} size={13} />
                         <Text style={{
                             color: "#fff"
@@ -160,7 +170,8 @@ export default function ImportSchemaScreen({ navigation }: any) {
                     <TouchableOpacity style={{
                         ...styles.defaultButton,
                         width: 100
-                    }} onPress={handleSubmit}>
+                    }} onPress={handleSubmit} disabled={loading}>
+                        {loading && <ActivityIndicator color={"#fff"} size={"small"}/>}
                         <Text style={{
                             color: "#fff"
                         }}>

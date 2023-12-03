@@ -25,7 +25,8 @@ export default function AppBar({ title, isBackable, navigation } : { title: stri
                 <Text style={{
                     fontSize: 20,
                     fontWeight: "bold",
-                    color: "#111"
+                    color: "#000",
+                    fontFamily: "Quicksand-Regular"
                 }}>{title}</Text>
             </View>
         </View>
