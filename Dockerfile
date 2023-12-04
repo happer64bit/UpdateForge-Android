@@ -5,7 +5,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Install dependencies
-RUN apk update && apk add --no-cache git bash
+RUN apk update && apk add git bash openjdk8
 
 # Install React Native CLI
 RUN npm install -g react-native-cli

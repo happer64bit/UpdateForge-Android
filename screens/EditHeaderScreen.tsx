@@ -93,7 +93,7 @@ export default function EditHeaderScreen({ route, navigation }) {
                     marginTop: 10,
                     padding: 12
                 }}>
-                    {headers.map((event, index) => (
+                    {headers && headers.map((event, index) => (
                         <View style={{
                             display: "flex",
                             flexDirection: "row",
