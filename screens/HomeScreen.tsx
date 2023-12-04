@@ -113,7 +113,7 @@ export default function HomeScreen({ navigation }: any) {
                             }} />
                             <View>
                                 <Text style={{ color: "#000", fontWeight: "bold", fontSize: 24 }}>{event.json.metadata.name}</Text>
-                                <Text style={{ color: "#000" }}>{event.json.metadata.description.slice(0, 100)}...</Text>
+                                <Text style={{ color: "#000" }}>{event.json.metadata.description ? event.json.metadata.description.slice(0, 100) : "No Description Provided"}...</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
