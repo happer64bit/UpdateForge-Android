@@ -1,0 +1,25 @@
+{
+    "$schema": "https://gist.githubusercontent.com/happer64bit/03ff7bce431c5d025e4171eb404a39a4/raw/60b8fc667e09494dd8f40680948dbb93dd672e9a/updateforge.schema.json",
+    "metadata": {
+        "name": "UpdateForge (Alpha - Android)",
+        "icon": "https://updateforge.vercel.app/favicon.ico"
+    },
+    "list": [
+        {
+            "version": "v0.2.0-alpha",
+            "type": "alpha",
+            "downloadUrl": "https://github.com/happer64bit/UpdateForge-Android/releases/download/v0.2.0-alpha/app-release.apk",
+            "properties": {
+                "isStable": false
+            }
+        },
+        {
+            "version": "v0.1.0-alpha",
+            "type": "alpha",
+            "downloadUrl": "https://github.com/happer64bit/UpdateForge-Android/releases/download/v0.1.0-alpha/app-release.apk",
+            "properties": {
+                "isStable": false
+            }
+        }
+    ]
+}
