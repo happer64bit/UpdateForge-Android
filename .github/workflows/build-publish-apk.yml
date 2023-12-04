@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - candy
 
 jobs:
   build:
@@ -26,7 +27,8 @@ jobs:
           npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew clean
+          /gradlew assembleRelease
 
       - name: Archive APK
         uses: actions/upload-artifact@v2
