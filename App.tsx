@@ -15,6 +15,7 @@ import {ToastProvider} from 'react-native-toast-notifications';
 import EditHeaderScreen from './screens/EditHeaderScreen.tsx';
 import ViewMetadataScreen from './screens/ViewMetadataScreen.tsx';
 import SettingsScreen from './screens/SettingsScreen.tsx';
+import SearchParamsScreen from './screens/SearchParamsScreen.tsx';
 
 const client = new ApolloClient({
   uri: 'https://updateforge.vercel.app/api/graphql',
@@ -34,6 +35,7 @@ const FeedScreen = () => {
         },
       }}
       initialRouteName="_Home">
+      <Stack.Screen name="SearchParamsScreen" component={SearchParamsScreen} />
       <Stack.Screen name="_Home" component={HomeScreen} />
       <Stack.Screen name="ImportSchemaScreen" component={ImportSchemaScreen} />
       <Stack.Screen name="PreviewScreen" component={PreviewScreen} />

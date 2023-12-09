@@ -7,8 +7,8 @@ import {
 import styles from '../global.styles'
 import Icon from 'react-native-vector-icons/Feather'
 import { store } from '../state/store'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { editSource } from "../state/sourcelist_reducers";
 import { useToast } from 'react-native-toast-notifications'
 import AppBar from '../components/AppBar'
@@ -16,11 +16,14 @@ import AppBar from '../components/AppBar'
 export default function HomeScreen({ navigation }: any) {
     const [list, setList] = useState<any[]>([])
     const [isloading, setIsLoading] = useState<boolean>(true)
-    const dispatch = useDispatch();
     const toast = useToast()
+    const dataFetchedRef = useRef(false);
+
+    const settings = useSelector((state: any) => state.settings)
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
+            // @ts-ignore
             setList(store.getState().sources)
         });
 
@@ -28,15 +31,21 @@ export default function HomeScreen({ navigation }: any) {
     }, [navigation])
 
     useEffect(() => {
-        if (true) updateButtonOnClick();
+        if(dataFetchedRef.current) return
+
+        if (settings.updateOnLoad) {
+            updateButtonOnClick();
+            dataFetchedRef.current = true
+        }
     }, [])
 
     async function updateButtonOnClick() {
         setIsLoading(true);
+        let updatedWithoutError = true;
 
         try {
             const schemas = list;
-
+            
             await Promise.all(
                 schemas.map(async (event: any) => {
                     const res = await fetch(event.source_url, {
@@ -47,24 +56,31 @@ export default function HomeScreen({ navigation }: any) {
                         const body = await res.json();
                         editSource(event.id, { ...body });
                     } else {
+                        updatedWithoutError = false
                         return toast.show(`Failed to update for ${event.json.metadata.name}`, {
                             type: "danger"
                         })
                     }
                 })
             )
-            toast.show("Updated All Schema")
-        } catch (err: any) {
-            toast.show("Error: " + err.name, {
+            if(updatedWithoutError) {
+                return toast.show("Updated All Schema");
+            }
+            toast.show("Failed To Update", {
                 type: "danger"
             })
+        } catch (err: any) {
+            updatedWithoutError = false
+        } finally {
+            setIsLoading(false);
         }
     }
 
     useEffect(() => {
+        // @ts-ignore
         setList(store.getState().sources)
         setIsLoading(false)
-    })
+    }, [])
 
     return (
         <View>
