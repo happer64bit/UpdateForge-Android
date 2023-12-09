@@ -1,15 +1,21 @@
-import { legacy_createStore as createStore } from "redux";
-import sourceListReducer from './sourcelist_reducers';
+import { legacy_createStore as createStore, combineReducers } from "redux";
+import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer } from 'redux-persist'
+
+import sourceListReducer from './sourcelist_reducers';
+import settingsReducer from "./settings_reducers";
 
 export const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
 }
 
-const persistedReducer = persistReducer(persistConfig, sourceListReducer)
+const rootReducer = combineReducers({
+  sources: sourceListReducer,
+  settings: settingsReducer,
+});
 
-export const store = createStore(persistedReducer)
-export const persistor = persistStore(store)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+export const store = createStore(persistedReducer);
+export const persistor = persistStore(store);
