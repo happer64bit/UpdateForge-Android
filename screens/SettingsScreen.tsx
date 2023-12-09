@@ -1,11 +1,13 @@
-import { View, Text, Switch, TouchableOpacity, Dimensions } from "react-native";
+import { Linking, View, Text, Switch, TouchableOpacity, Dimensions } from "react-native";
 import styles from "../global.styles";
 import Icon from 'react-native-vector-icons/Feather'
 import { updateSettings } from "../state/settings_reducers";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useToast } from "react-native-toast-notifications";
-import { writeFile, mkdir, exists, ExternalStorageDirectoryPath } from 'react-native-fs';
+import { writeFile, mkdir, exists, ExternalStorageDirectoryPath, readFile } from 'react-native-fs';
+import DocumentPicker from "react-native-document-picker";
+import { addSource } from "../state/sourcelist_reducers";
 
 const joinPaths = (...paths: string[]) => {
     return paths.reduce((joinedPath, pathSegment) => {
@@ -69,6 +71,33 @@ export default function SettingsScreen({ navigation }: any) {
         }
     };
 
+    const onRestoreButtonClicked = async () => {
+        try {
+            const result = await DocumentPicker.pick({
+                type: ["application/json"],
+                allowMultiSelection: false
+            });
+    
+            const fileContent = await readFile(result[0].uri);
+    
+            if (Array.isArray(fileContent)) {
+                for(var i = 0; i<fileContent.length; i++) {
+                    dispatch(addSource(fileContent[i]));
+                }
+            } else {
+                return toast.show("Invalid data format. Expected an array.", { type: "danger" });
+            }
+
+    
+            toast.show(`Restored data from ${result[0].uri}`);
+        } catch (error: any) {
+            if (DocumentPicker.isCancel(error)) {
+                toast.show("Document picker was canceled");
+            } else {
+                toast.show(error.message, { type: "danger" });
+            }
+        }
+    };
 
     return (
         <View style={{
@@ -116,7 +145,7 @@ export default function SettingsScreen({ navigation }: any) {
                             }}>Backup</Text>
                             <Icon name="archive" color="#fff" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ ...styles.defaultButton, width: "100%" }}>
+                        <TouchableOpacity style={{ ...styles.defaultButton, width: "100%" }} onPress={onRestoreButtonClicked}>
                             <Text style={{
                                 color: "#fff"
                             }}>Restore</Text>
@@ -136,7 +165,7 @@ export default function SettingsScreen({ navigation }: any) {
                         marginVertical: 8,
                         flexWrap: "wrap"
                     }}>
-                        <TouchableOpacity style={{ ...styles.defaultButton, width: "100%" }}>
+                        <TouchableOpacity style={{ ...styles.defaultButton, width: "100%" }} onPress={() => Linking.openURL("https://docs.google.com/forms/d/1eMOxnmWRjwz_2Xh_GKiQdDXTPNkOzwpyYdDrsYdkoXI/edit")}>
                             <Text style={{
                                 color: "#fff"
                             }}>Report a Bug</Text>
